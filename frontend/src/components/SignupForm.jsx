@@ -1,87 +1,95 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
-import useFetch from '../hooks/useFetch';
-import validateManyFields from '../validations';
-import Input from './utils/Input';
-import Loader from './utils/Loader';
+import axios from "axios";
 
 const SignupForm = () => {
 
-  const [formErrors, setFormErrors] = useState({});
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: ""
   });
-  const [fetchData, { loading }] = useFetch();
+
   const navigate = useNavigate();
 
   const handleChange = e => {
-    setFormData({
-      ...formData, [e.target.name]: e.target.value
-    });
-  }
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
 
-  const handleSubmit = e => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const errors = validateManyFields("signup", formData);
-    setFormErrors({});
-    if (errors.length > 0) {
-      setFormErrors(errors.reduce((total, ob) => ({ ...total, [ob.field]: ob.err }), {}));
-      return;
-    }
-
-    const config = { url: "/auth/signup", method: "post", data: formData };
-    fetchData(config).then(() => {
+    try {
+      await axios.post("http://localhost:5000/api/auth/signup", formData);
       navigate("/login");
-    });
-
-  }
-
-  const fieldError = (field) => (
-    <p className={`mt-1 text-pink-600 text-sm ${formErrors[field] ? "block" : "hidden"}`}>
-      <i className='mr-2 fa-solid fa-circle-exclamation'></i>
-      {formErrors[field]}
-    </p>
-  )
+    } catch (err) {
+      console.log(err.response?.data || err.message);
+    }
+  };
 
   return (
-    <>
-      <form className='m-auto my-16 max-w-[500px] p-8 bg-white border-2 shadow-md rounded-md'>
-        {loading ? (
-          <Loader />
-        ) : (
-          <>
-            <h2 className='text-center mb-4'>Welcome user, please signup here</h2>
-            <div className="mb-4">
-              <label htmlFor="name" className="after:content-['*'] after:ml-0.5 after:text-red-500">Name</label>
-              <Input type="text" name="name" id="name" value={formData.name} placeholder="Your name" onChange={handleChange} />
-              {fieldError("name")}
-            </div>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-600 via-purple-600 to-blue-500">
 
-            <div className="mb-4">
-              <label htmlFor="email" className="after:content-['*'] after:ml-0.5 after:text-red-500">Email</label>
-              <Input type="text" name="email" id="email" value={formData.email} placeholder="youremail@domain.com" onChange={handleChange} />
-              {fieldError("email")}
-            </div>
+      <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl shadow-xl p-8 w-[360px]">
 
-            <div className="mb-4">
-              <label htmlFor="password" className="after:content-['*'] after:ml-0.5 after:text-red-500">Password</label>
-              <Input type="password" name="password" id="password" value={formData.password} placeholder="Your password.." onChange={handleChange} />
-              {fieldError("password")}
-            </div>
+        <h2 className="text-3xl font-bold text-white text-center mb-6">
+          Create Account
+        </h2>
 
-            <button className='bg-primary text-white px-4 py-2 font-medium hover:bg-primary-dark' onClick={handleSubmit}>Submit</button>
+        {/* Name */}
+        <div className="mb-4">
+          <input
+            type="text"
+            name="name"
+            placeholder="Full Name"
+            value={formData.name}
+            onChange={handleChange}
+            className="w-full p-3 rounded-lg bg-white/20 text-white placeholder-white outline-none focus:ring-2 focus:ring-white"
+          />
+        </div>
 
-            <div className='pt-4'>
-              <Link to="/login" className='text-blue-400'>Already have an account? Login here</Link>
-            </div>
-          </>
-        )}
+        {/* Email */}
+        <div className="mb-4">
+          <input
+            type="email"
+            name="email"
+            placeholder="Email Address"
+            value={formData.email}
+            onChange={handleChange}
+            className="w-full p-3 rounded-lg bg-white/20 text-white placeholder-white outline-none focus:ring-2 focus:ring-white"
+          />
+        </div>
 
-      </form>
-    </>
-  )
-}
+        {/* Password */}
+        <div className="mb-6">
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            value={formData.password}
+            onChange={handleChange}
+            className="w-full p-3 rounded-lg bg-white/20 text-white placeholder-white outline-none focus:ring-2 focus:ring-white"
+          />
+        </div>
 
-export default SignupForm
+        {/* Button */}
+        <button
+          onClick={handleSubmit}
+          className="w-full py-3 rounded-lg bg-white text-purple-700 font-semibold hover:bg-gray-200 transition duration-300"
+        >
+          Signup
+        </button>
+
+        {/* Link */}
+        <p className="text-center text-white text-sm mt-4">
+          Already have an account?{" "}
+          <Link to="/login" className="underline font-medium">
+            Login
+          </Link>
+        </p>
+
+      </div>
+    </div>
+  );
+};
+
+export default SignupForm;

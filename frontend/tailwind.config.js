@@ -1,15 +1,18 @@
 module.exports = {
+  darkMode: "class", // ✅ enables manual dark mode
+
   content: [
     "./src/**/*.{js,jsx,ts,tsx}",
   ],
+
   theme: {
     extend: {
       colors: {
-        "primary": "#24ab8f",
+        primary: "#24ab8f",
         "primary-dark": "#268d77",
       },
       animation: {
-        "loader": "loader 1s linear infinite",
+        loader: "loader 1s linear infinite",
       },
       keyframes: {
         loader: {
@@ -20,5 +23,6 @@ module.exports = {
       }
     },
   },
+
   plugins: [],
-}
+};

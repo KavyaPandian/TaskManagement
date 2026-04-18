@@ -1,40 +1,74 @@
-import React, { useEffect } from 'react'
-import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
-import Tasks from '../components/Tasks';
-import MainLayout from '../layouts/MainLayout';
+import React from "react";
+import { Link } from "react-router-dom";
 
 const Home = () => {
-
-  const authState = useSelector(state => state.authReducer);
-  const { isLoggedIn } = authState;
-
-  useEffect(() => {
-    document.title = authState.isLoggedIn ? `${authState.user.name}'s tasks` : "Task Manager";
-  }, [authState]);
-
-
-
   return (
-    <>
-      <MainLayout>
-        {!isLoggedIn ? (
-          <div className='bg-primary text-white h-[40vh] py-8 text-center'>
-            <h1 className='text-2xl'> Welcome to Task Manager App</h1>
-            <Link to="/signup" className='mt-10 text-xl block space-x-2 hover:space-x-4'>
-              <span className='transition-[margin]'>Join now to manage your tasks</span>
-              <span className='relative ml-4 text-base transition-[margin]'><i className="fa-solid fa-arrow-right"></i></span>
-            </Link>
-          </div>
-        ) : (
-          <>
-            <h1 className='text-lg mt-8 mx-8 border-b border-b-gray-300'>Welcome {authState.user.name}</h1>
-            <Tasks />
-          </>
-        )}
-      </MainLayout>
-    </>
-  )
-}
+    <div className="min-h-screen bg-gradient-to-br from-indigo-600 via-purple-600 to-blue-500 text-white">
 
-export default Home
+      {/* Hero Section */}
+      <div className="flex flex-col items-center justify-center text-center px-6 py-24">
+
+        <h1 className="text-4xl md:text-5xl font-bold mb-6">
+          Organize Your Tasks Easily 🚀
+        </h1>
+
+        <p className="text-lg md:text-xl mb-8 opacity-90">
+          Manage your daily tasks efficiently and stay productive.
+        </p>
+
+        <div className="flex gap-4">
+          <Link
+            to="/signup"
+            className="bg-white text-purple-700 px-6 py-3 rounded-lg font-semibold hover:bg-gray-200 transition"
+          >
+            Get Started
+          </Link>
+
+          <Link
+            to="/login"
+            className="border border-white px-6 py-3 rounded-lg hover:bg-white hover:text-purple-700 transition"
+          >
+            Login
+          </Link>
+        </div>
+
+      </div>
+
+      {/* Features Section */}
+      <div className="bg-white text-gray-800 py-16 px-6">
+
+        <h2 className="text-3xl font-bold text-center mb-10">
+          Why Use Task Manager?
+        </h2>
+
+        <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+
+          <div className="p-6 rounded-lg shadow-md text-center">
+            <h3 className="text-xl font-semibold mb-2">📋 Manage Tasks</h3>
+            <p>Easily create, update and delete your tasks.</p>
+          </div>
+
+          <div className="p-6 rounded-lg shadow-md text-center">
+            <h3 className="text-xl font-semibold mb-2">🔐 Secure</h3>
+            <p>Authentication with JWT keeps your data safe.</p>
+          </div>
+
+          <div className="p-6 rounded-lg shadow-md text-center">
+            <h3 className="text-xl font-semibold mb-2">⚡ Fast</h3>
+            <p>Lightning fast performance using MERN stack.</p>
+          </div>
+
+        </div>
+
+      </div>
+
+      {/* Footer */}
+      <div className="text-center py-6 text-sm opacity-80">
+        © 2026 Task Manager | Built with ❤️ by Kavya
+      </div>
+
+    </div>
+  );
+};
+
+export default Home;
