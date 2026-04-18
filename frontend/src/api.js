@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "http://localhost:5000/api",  // ✅ VERY IMPORTANT
+  baseURL: "https://taskmanagement-gma3.onrender.com/api",  // ✅ UPDATED
 });
 
 // Optional: attach token automatically
